@@ -1,18 +1,20 @@
+import {DocumentContext} from "next/document";
+
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
     // public authorization: string;
-    private ctx: any;
+    private context: DocumentContext;
 
     public hostName = (): string => {
         return Api.host;
     }
 
-    public getInitialToken = async (ctx) => {
-        this.ctx = ctx;
+    public getInitialToken = async (context) => {
+        this.context = context;
     }
 
     public removeCtx = () => {
-        delete this.ctx;
+        delete this.context;
     }
 
     private get = async (path: string): Promise<Response> => {
