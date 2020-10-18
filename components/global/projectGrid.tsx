@@ -5,7 +5,6 @@ import {SubText, Title} from "@components/global/text";
 import Link from "next/link";
 
 interface ProjectProps {
-    dbName: string,
     elements: CollectionSchema[],
 }
 

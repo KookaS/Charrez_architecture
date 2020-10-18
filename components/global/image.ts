@@ -26,15 +26,18 @@ export const ImageProjectGridElement = Styled.div`
     justify-self: center;
     color: transparent;
     position: relative;
+    z-index: 1;
     
     :hover {
         opacity: 0.8;
         transition: .3s ease-out;
         color: white;
+        cursor: pointer;
     
         @media only screen and (min-width: 600px) {
             /* For Desktop: */
             width: 105%;
+            z-index: 0;
         }
     }
 `;

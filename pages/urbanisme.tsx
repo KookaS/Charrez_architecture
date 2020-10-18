@@ -3,14 +3,14 @@ import {Api} from "@services/api";
 import {CollectionSchema} from "@apiTypes/apiSchema";
 import {ProjectGrid} from "@components/global/projectGrid";
 
-interface VillasProps {
+interface UrbanismeProps {
     api: Api,
     projects: CollectionSchema[],
 }
 
-export default class extends Component<VillasProps, {}> {
-    public static title: string = "villas";
-    props: VillasProps;
+export default class extends Component<UrbanismeProps, {}> {
+    public static title: string = "urbanisme";
+    props: UrbanismeProps;
 
     public static getInitialProps = async (context) => {
         try {
