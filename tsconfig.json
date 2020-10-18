@@ -24,6 +24,15 @@
       ],
       "@components/*": [
         "./components/*"
+      ],
+      "@services/*": [
+        "./services/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@apiTypes/*": [
+        "./types/*"
       ]
     }
   },
