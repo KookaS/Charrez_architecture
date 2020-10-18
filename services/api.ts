@@ -47,7 +47,7 @@ export class Api {
 
     public getAllCollections = async (dbName: string): Promise<AllCollectionSchema> => {
         try {
-            const res = await this.get(dbName + "/loadCollections");
+            const res = await this.get(dbName + "/loadAllCollections");
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {

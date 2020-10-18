@@ -18,9 +18,10 @@ export default class extends Component<IndexProps, IndexState> {
 
     public static getInitialProps = async (context) => {
         try {
-            const api = new Api();  //NextJS api
+            const api = new Api();
             await api.getInitialToken(context);
-            const response = await api.getAllCollections("acceuil")
+            const dbName: string = context.pathname.slice(1);
+            const response = await api.getAllCollections(dbName)
             const id = response.collections.map((col) => col.name)
             api.removeCtx();
             return {api, id};
@@ -32,15 +33,13 @@ export default class extends Component<IndexProps, IndexState> {
     constructor(props) {
         super(props);
         this.props = props;
-        this.state = this.props.id;
-
     };
 
 
     render() {
         return (
             <ImageBackground
-                style={{backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/loadImage?id=${this.state})`}}>
+                style={{backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/loadImage?id=${this.props.id})`}}>
                 <Title className='Acceuil'>CHARREZ ARCHITECTURE</Title>
                 <SubText className='Acceuil'>J. CHARREZ SIA - EAUG - ETS</SubText>
                 <SubText className='Acceuil'>CHEMIN TATTES-FONTAINE 43 - 1253 VANDOEUVRES</SubText>
