@@ -1,31 +1,46 @@
 import React, {Component} from 'react';
 import {ImageBackground} from "@components/global/image";
 import {SubText, Title} from "@components/global/text";
+import {Api} from "@services/api";
 
 interface IndexProps {
-    background,
-    api
+    id: string,
+    api: Api,
 }
 
 interface IndexState {
-    background
+
 }
 
 export default class extends Component<IndexProps, IndexState> {
     public static title: string = "acceuil";
     props: IndexProps;
-    private id: string = "6FxiP9uxBoUcWl3Qq6Kp";
 
-    constructor(props: IndexProps) {
+    public static getInitialProps = async (context) => {
+        try {
+            const api = new Api();  //NextJS api
+            await api.getInitialToken(context);
+            const response = await api.getAllCollections("acceuil")
+            const id = response.collections.map((col) => col.name)
+            api.removeCtx();
+            return {api, id};
+        } catch (err) {
+            return {};
+        }
+    };
+
+    constructor(props) {
         super(props);
         this.props = props;
+        this.state = this.props.id;
+
     };
 
 
     render() {
         return (
             <ImageBackground
-                style={{backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/villas/loadImage?id=${this.id})`}}>
+                style={{backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/loadImage?id=${this.state})`}}>
                 <Title className='Acceuil'>CHARREZ ARCHITECTURE</Title>
                 <SubText className='Acceuil'>J. CHARREZ SIA - EAUG - ETS</SubText>
                 <SubText className='Acceuil'>CHEMIN TATTES-FONTAINE 43 - 1253 VANDOEUVRES</SubText>

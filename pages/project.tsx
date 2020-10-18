@@ -1,32 +1,33 @@
 import React, {Component} from 'react';
 import {Api} from "@services/api";
-import {CollectionSchema} from "@apiTypes/apiSchema";
-import {ProjectGrid} from "@components/global/projectGrid";
+import {MetadataSchema} from "@apiTypes/apiSchema";
+import {ElementGrid} from "@components/global/elementGrid";
 
 interface IndexProps {
+    id: string,
     api: Api,
-    projects: CollectionSchema[],
+    documents: MetadataSchema[],
 }
 
 interface IndexState {
     dbName: string,
     api: Api,
-    projects: CollectionSchema[],
+    documents: MetadataSchema[],
 }
 
 export default class extends Component<IndexProps, IndexState> {
-    public static title: string = "villas";
+    public static title: string = "project";
     props: IndexProps;
 
     public static getInitialProps = async (context) => {
         try {
             const api = new Api();  //NextJS api
             await api.getInitialToken(context);
-            const response = await api.getAllCollections("villas")
-            const ids = response.collections.map((col) => col.name)
-            const projects = await Promise.all(ids.map(async (id) => await api.getMetadata("villas", id)))
+            const {id} = context.query;
+            const response = await api.getAllDocuments("villas", id);
+            const documents = response.documents;
             api.removeCtx();
-            return {api, projects};
+            return {id, api, documents};
         } catch (err) {
             return {};
         }
@@ -36,14 +37,15 @@ export default class extends Component<IndexProps, IndexState> {
         super(props);
         this.props = props;
         this.state = {
-            dbName: "villas",
-            projects: this.props.projects,
+            dbName: this.props.id,
+            documents: this.props.documents,
             api: this.props.api,
         }
     };
 
+
     render() {
-        return ProjectGrid({dbName: this.state.dbName, elements: this.state.projects});
+        return ElementGrid({dbName: this.state.dbName, elements: this.state.documents});
     }
 
 }

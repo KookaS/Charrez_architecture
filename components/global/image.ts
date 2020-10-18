@@ -19,7 +19,7 @@ export const ImageProjectGridContainer = Styled.div`
 
 export const ImageProjectGridElement = Styled.div`
     width: 100%;
-    height: 500px;
+    height: 700px;
     grid-area: ${props => props.theme.row} / ${props => props.theme.column} / ${props => props.theme.row + 1} / ${props => props.theme.column + 1};
     background-size: cover;
     background-position: center;

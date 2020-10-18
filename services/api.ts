@@ -1,5 +1,5 @@
 import {DocumentContext} from "next/document";
-import {ProjectSchema} from "@apiTypes/projectSchema";
+import {CollectionSchema, MetadataSchema, DocumentSchema, AllCollectionSchema} from "@apiTypes/apiSchema";
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
@@ -35,7 +35,7 @@ export class Api {
         }
     }
 
-    public getMetadata = async (dbName: string, id: string): Promise<ProjectSchema> => {
+    public getMetadata = async (dbName: string, id: string): Promise<CollectionSchema> => {
         try {
             const res = await this.get(dbName + `/loadMetadata?id=${id}`);
             this.checkBadStatus(res);
@@ -44,4 +44,25 @@ export class Api {
             console.log(err)
         }
     };
+
+    public getAllCollections = async (dbName: string): Promise<AllCollectionSchema> => {
+        try {
+            const res = await this.get(dbName + "/loadCollections");
+            this.checkBadStatus(res);
+            return await res.json();
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    public getAllDocuments = async (dbName: string, collection: string): Promise<DocumentSchema> => {
+        try {
+            const res = await this.get(dbName + `/loadDocuments?id=${collection}`);
+            this.checkBadStatus(res);
+            return await res.json();
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
 }
