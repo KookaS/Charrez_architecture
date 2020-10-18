@@ -20,20 +20,21 @@ export const ImageProjectGridContainer = Styled.div`
 export const ImageProjectGridElement = Styled.div`
     width: 100%;
     height: 500px;
-    z-index: 10;
     grid-area: ${props => props.theme.row} / ${props => props.theme.column} / ${props => props.theme.row + 1} / ${props => props.theme.column + 1};
     background-size: cover;
     background-position: center;
     justify-self: center;
+    color: transparent;
+    position: relative;
     
     :hover {
-        opacity: 0.4;
+        opacity: 0.8;
         transition: .3s ease-out;
+        color: white;
     
         @media only screen and (min-width: 600px) {
             /* For Desktop: */
-            z-index: 9;
-            width: 110%;
+            width: 105%;
         }
     }
 `;

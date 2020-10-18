@@ -1,5 +1,5 @@
 import {DocumentContext} from "next/document";
-import {ProjectSchema} from "../types/projectSchema";
+import {ProjectSchema} from "@apiTypes/projectSchema";
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;

@@ -23,10 +23,10 @@ export default class extends Component<IndexProps, IndexState> {
         try {
             const api = new Api();  //nextjs api
             await api.getInitialToken(context);
-            const ids = ["puEKs3Z4Kt", "puEKs3Z4Kt", "puEKs3Z4Kt"];
+            const ids = ["puEKs3Z4Kt", "6FxiP9uxBoUcWl3Qq6Kp", "puEKs3Z4Kt", "puEKs3Z4Kt", "6FxiP9uxBoUcWl3Qq6Kp"];
             const projects = await Promise.all(ids.map(async (id) => await api.getMetadata("villas", id)))
             api.removeCtx();
-            return {api, projects};
+            return {api, projects, ids};
         } catch (err) {
             return {};
         }

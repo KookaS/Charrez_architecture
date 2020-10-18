@@ -31,7 +31,7 @@
       "@public/*": [
         "./public/*"
       ],
-      "@types/*": [
+      "@apiTypes/*": [
         "./types/*"
       ]
     }

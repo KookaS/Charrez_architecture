@@ -29,7 +29,8 @@ const App = ({Component, pageProps}) => {
                             font-style: normal; 
                             font-variant: normal; 
                             font-weight: 400; 
-                            line-height: 35px;                        
+                            line-height: 35px;         
+                            overflow-x: hidden;               
                         }
                     `}
             </style>
