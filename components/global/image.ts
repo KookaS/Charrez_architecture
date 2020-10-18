@@ -1,30 +1,45 @@
 import Styled from "styled-components";
 
-export const ImageProject = Styled.img`
-    border-radius: 5px;
-    margin: 20px auto 0 auto;
-    display: block;
-    width: min(98%, 1300px);
+export const ImageProjectGridContainer = Styled.div`
+    height: auto;
+    width: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    
+    @media only screen and (min-width: 300px) {
+        /* For Phones: */
+        display: grid-inline;
+    }
+    
+    @media only screen and (min-width: 600px) {
+        /* For Desktop: */
+        display: grid;
+    }
+`;
+
+export const ImageProjectGridElement = Styled.div`
+    width: 100%;
+    height: 500px;
+    z-index: 10;
+    grid-area: ${props => props.theme.row} / ${props => props.theme.column} / ${props => props.theme.row + 1} / ${props => props.theme.column + 1};
+    background-size: cover;
+    background-position: center;
+    justify-self: center;
+    
+    :hover {
+        opacity: 0.4;
+        transition: .3s ease-out;
+    
+        @media only screen and (min-width: 600px) {
+            /* For Desktop: */
+            z-index: 9;
+            width: 110%;
+        }
+    }
 `;
 
 export const ImageBackground = Styled.div`
     width: 100%;
     height: 100%;
-    background-repeat: no-repeat;
     background-size: cover;
-`;
-
-export const Title = Styled.div`
-    line-height: 500px;
-    text-align: center;
-    font-size: 60px; 
-    font-style: bold; 
-    font-variant: normal; 
-    font-weight: 600; 
-`;
-
-export const SubText = Styled.div`
-    text-align: center;
-    font-size: 30px; 
-    display: block;
 `;

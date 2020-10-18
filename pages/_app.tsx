@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Head from "next/head";
 import NavBar from "@components/global/navBar";
 import {MainPadding} from "@components/global/mainPadding";
+import {scrollbar} from "@components/global/scrollbar";
 
 const App = ({Component, pageProps}) => {
     return (
@@ -17,6 +18,7 @@ const App = ({Component, pageProps}) => {
             </MainPadding>
 
             <style jsx global>{`
+                        ${scrollbar}
                         body {
                             margin: 0;
                             font-family: Roboto;

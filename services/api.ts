@@ -1,4 +1,5 @@
 import {DocumentContext} from "next/document";
+import {ProjectSchema} from "../types/projectSchema";
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
@@ -34,11 +35,11 @@ export class Api {
         }
     }
 
-    public getImage = async (dbName: string, id: string): Promise<Response> => {
+    public getMetadata = async (dbName: string, id: string): Promise<ProjectSchema> => {
         try {
-            const res = await this.get(dbName + `/loadImage?id=${id}`);
+            const res = await this.get(dbName + `/loadMetadata?id=${id}`);
             this.checkBadStatus(res);
-            return res;
+            return await res.json();
         } catch (err) {
             console.log(err)
         }
