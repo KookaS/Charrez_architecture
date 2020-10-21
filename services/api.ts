@@ -1,5 +1,5 @@
 import {DocumentContext} from "next/document";
-import {CollectionSchema, MetadataSchema, DocumentSchema, AllCollectionSchema} from "@apiTypes/apiSchema";
+import {CollectionSchema, DocumentSchema, AllCollectionSchema} from "@apiTypes/apiSchema";
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
