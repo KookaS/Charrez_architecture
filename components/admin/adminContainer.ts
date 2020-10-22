@@ -146,9 +146,8 @@ export const Button = Styled.div`
 `;
 
 export const Field = Styled.input`
-    display: inline-block;
     height: 23px;
-    width: min(96%, 550px);
+    width: 200px;
     margin: 5px 5px 5px 5px;
     padding: 5px;
     border: 1px solid grey;
@@ -157,12 +156,6 @@ export const Field = Styled.input`
     opacity: 0.8;
     display: block;
     
-    font-size: 16px; 
-    font-style: normal; 
-    font-variant: normal; 
-    font-weight: 500; 
-    line-height: 35px;
-    
     :focus {
         outline-color: black;
     }
@@ -170,7 +163,6 @@ export const Field = Styled.input`
 
 export const SubContainer = Styled.div`
     display: inline-block;
-    color: lightblue;
     margin: 1% 2% 1% 2%;
     width: 96%;
     padding: 5px;
