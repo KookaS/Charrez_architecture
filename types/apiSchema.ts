@@ -16,7 +16,7 @@ export interface DocumentSchema {
     message: string,
     collection: string,
     documents: {
-        id_: string,
+        _id: string,
         title: string
     }[]
 }
@@ -26,4 +26,14 @@ export interface MetadataSchema {
     title: string,
     description: string,
     date: string
+}
+
+export interface AccountSchema {
+    user: string,
+    password: string
+}
+
+export interface SessionSchema {
+    _id: string,
+    created_at: string
 }

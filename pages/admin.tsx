@@ -1,24 +1,29 @@
 import React, {Component} from 'react';
 import {Api} from "@services/api";
-import {Button} from "@components/admin/adminContainer";
-import {AdminContainer, PageContainer} from "@components/admin/adminContainer";
+import {AdminContainer, Button, Field, PageContainer} from "@components/admin/adminContainer";
 import {AddProject} from "@components/admin/addProject";
 import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
 
 interface AdminProps {
-    id: string,
     api: Api,
     projects: CollectionSchema[],
-    documents: DocumentSchema[],
+    docs: DocumentSchema[],
 }
 
 interface AdminState {
-
+    projects: CollectionSchema[],
+    docs: DocumentSchema[],
+    login: {
+        user: string,
+        password: string
+    },
+    authorization: string,
 }
 
 export default class extends Component<AdminProps, AdminState> {
     public static title: string = "admin";
     props: AdminProps;
+    private api: Api;
     private pages: string[] = ["acceuil", "villas", "immeubles", "urbanisme"];
 
     public static getInitialProps = async (context) => {
@@ -27,24 +32,56 @@ export default class extends Component<AdminProps, AdminState> {
             await api.getInitialToken(context);
             const response = await api.getAllCollections("villas")
             const ids = response.collections.map((col) => col.name)
-            console.log(ids)
             const projects = await Promise.all(ids.map(async (id) => await api.getMetadata("villas", id)))
-            console.log(projects)
-            const documents = projects.map(async (project) => {
-                const response = await api.getAllDocuments("villas", project.collection);
-                return response.documents;
-            })
+            const docs = await Promise.all(projects.map(async (project) => {
+                return await api.getAllDocuments("villas", project.collection);
+            }));
             api.removeCtx();
-            return {api, projects, documents};
+            return {api, projects, docs};
         } catch (err) {
             return {};
         }
     };
 
-
     constructor(props) {
         super(props);
         this.props = props;
+        this.state = {
+            projects: this.props.projects,
+            docs: this.props.docs,
+            login: {
+                user: "",
+                password: ""
+            },
+            authorization: undefined
+        }
+    };
+
+    componentDidMount() {
+        this.api = new Api(this.props.api.authorization);
+    }
+
+    private update = async (dbName: string) => {
+        const response = await this.api.getAllCollections(dbName)
+        const ids = response.collections.map((col) => col.name)
+        const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata("villas", id)))
+        const docs = await Promise.all(projects.map(async (project) => {
+            return await this.api.getAllDocuments("villas", project.collection);
+        }));
+        this.setState({projects, docs})
+    };
+
+    private updateUser = async (e) => {
+        await this.setState({login: {...this.state.login, user: e.target.value}});
+    };
+
+    private updatePassword = async (e) => {
+        await this.setState({login: {...this.state.login, password: e.target.value}});
+    };
+
+    private auth = async () => {
+        const authorization = await this.api.login(this.state.login);
+        this.setState({authorization})
     };
 
     /*
@@ -77,10 +114,16 @@ export default class extends Component<AdminProps, AdminState> {
         return (<>
 
             <AdminContainer>
-                <PageContainer>
+                <PageContainer style={{display: this.state.authorization ? "none" : "inline-block"}}>
+                    &emsp;User: <Field onChange={this.updateUser} value={this.state.login.user}/><br/>
+                    &emsp;Password: <Field onChange={this.updatePassword} value={this.state.login.password}/><br/>
+                    <Button onClick={this.auth}>LOGIN</Button>
+                </PageContainer>
 
-                    <AddProject key={0} index={0} page={"villas"} projects={this.props.projects}
-                                documents={this.props.documents}/>)
+                <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
+
+                    <AddProject key={0} index={0} page={"villas"} projects={this.state.projects}
+                                docs={this.state.docs} updateParent={async () => await this.update("villas")}/>)
 
                     <Button onClick={null}>ADD PROJECT</Button>
                 </PageContainer>

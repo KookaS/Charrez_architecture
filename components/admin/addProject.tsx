@@ -7,25 +7,36 @@ import {
 import {CrossButton} from '@components/global/crossButton';
 import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
 import {AddDocument} from "@components/admin/addDocument";
+import {Api} from "@services/api";
 
 interface ProjectProps {
     index: number,
     page: string,
     projects: CollectionSchema[],
-    documents: DocumentSchema[],
+    docs: DocumentSchema[],
+    updateParent,
 }
 
 interface ProjectState {
+    index: number,
+    page: string,
+    projects: CollectionSchema[],
+    docs: DocumentSchema[],
 }
 
 export class AddProject extends Component<ProjectProps, ProjectState> {
-
     props: ProjectProps;
-    public state: ProjectState;
+    private api: Api = new Api();
 
     constructor(props: ProjectProps) {
         super(props);
         this.props = props;
+        this.state = {
+            index: this.props.index,
+            page: this.props.page,
+            projects: this.props.projects,
+            docs: this.props.docs,
+        }
     }
 
     /*
@@ -66,12 +77,17 @@ export class AddProject extends Component<ProjectProps, ProjectState> {
     public render(): React.ReactElement {
         return (
             <SubContainer className='Ticker'>
-                <Title className='title'>Page: {this.props.page}</Title>
+                <Title className='title'>Page: {this.state.page}</Title>
 
-                <CrossButton className='Ticker' onClick={null}/>
-                {this.props.projects.map((project, index) =>
-                    <AddDocument key={index} index={index} project={project}
-                                 documents={this.props.documents.find(e => e.collection == project.collection)}/>)
+                {this.state.projects.map((project, index) => {
+                    return <div key={index}>
+                        <CrossButton className='Project' onClick={null}/>
+                        <AddDocument key={index} page={this.state.page} index={index}
+                                     project={project}
+                                     doc={this.state.docs.find(e => e.collection == project.collection)}
+                                     updateParent={async () => await this.props.updateParent()}/>
+                    </div>
+                })
                 }
                 <Button onClick={null}>ADD DOCUMENT</Button>
                 <br/>

@@ -1,10 +1,18 @@
 import {DocumentContext} from "next/document";
-import {CollectionSchema, DocumentSchema, AllCollectionSchema} from "@apiTypes/apiSchema";
+import {CollectionSchema, DocumentSchema, AllCollectionSchema, AccountSchema, SessionSchema} from "@apiTypes/apiSchema";
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
-    // public authorization: string;
     private context: DocumentContext;
+    public authorization: string;
+
+    constructor(auth?: string) {
+        if (auth) {
+            this.authorization = auth;
+        } else {
+            this.authorization = undefined; // or ""
+        }
+    }
 
     public hostName = (): string => {
         return Api.host;
@@ -18,9 +26,51 @@ export class Api {
         delete this.context;
     }
 
+    public login = async (account: AccountSchema) => {
+        try {
+            const res = await this.post("account/auth", JSON.stringify(account));
+            await this.checkBadStatus(res);
+            const key: SessionSchema = await res.json();
+            this.setAuth(key._id);
+            return key._id
+        } catch (err) {
+        }
+    };
+
+    public setAuth = (value: string) => {
+        this.authorization = value;
+    };
+
     private get = async (path: string): Promise<Response> => {
         const requestOptions = {
-            method: 'GET',
+            method: 'GET'
+        };
+
+        return await fetch(`${Api.host}/${path}`, requestOptions);
+    };
+
+    private post = async (path: string, body: string): Promise<Response> => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+                'Authorization': this.authorization,
+            },
+            body
+        };
+
+        return await fetch(`${Api.host}/${path}`, requestOptions);
+    };
+
+    private delete = async (path: string, body: string): Promise<Response> => {
+        const requestOptions = {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.authorization
+            },
+            body
         };
 
         return await fetch(`${Api.host}/${path}`, requestOptions);
@@ -65,4 +115,13 @@ export class Api {
         }
     };
 
+    public deleteDocument = async (dbName: string, collection: string, docID: string): Promise<DocumentSchema> => {
+        try {
+            const res = await this.delete(dbName + `/deleteDocument?collection=${collection}&id=${docID}`, "");
+            this.checkBadStatus(res);
+            return await res.json();
+        } catch (err) {
+            console.log(err)
+        }
+    };
 }
