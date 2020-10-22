@@ -53,7 +53,7 @@ export default class extends Component<AdminProps, AdminState> {
                 user: "",
                 password: ""
             },
-            authorization: this.api.authorization
+            authorization: undefined
         }
     };
 
@@ -80,8 +80,8 @@ export default class extends Component<AdminProps, AdminState> {
     };
 
     private auth = async () => {
-        await this.api.login(this.state.login);
-        this.setState({authorization: this.api.authorization})
+        const authorization = await this.api.login(this.state.login);
+        this.setState({authorization})
     };
 
     /*
@@ -117,8 +117,9 @@ export default class extends Component<AdminProps, AdminState> {
                 <PageContainer style={{display: this.state.authorization ? "none" : "inline-block"}}>
                     &emsp;User: <Field onChange={this.updateUser} value={this.state.login.user}/><br/>
                     &emsp;Password: <Field onChange={this.updatePassword} value={this.state.login.password}/><br/>
-                    <Button onClick={() => console.log(this.state)}>LOGIN</Button>
+                    <Button onClick={this.auth}>LOGIN</Button>
                 </PageContainer>
+
                 <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
 
                     <AddProject key={0} index={0} page={"villas"} projects={this.state.projects}

@@ -10,7 +10,7 @@ export class Api {
         if (auth) {
             this.authorization = auth;
         } else {
-            this.authorization = undefined;
+            this.authorization = undefined; // or ""
         }
     }
 
@@ -32,6 +32,7 @@ export class Api {
             await this.checkBadStatus(res);
             const key: SessionSchema = await res.json();
             this.setAuth(key._id);
+            return key._id
         } catch (err) {
         }
     };
@@ -52,8 +53,9 @@ export class Api {
         const requestOptions = {
             method: 'POST',
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
-                'Authorization': this.authorization
+                'Authorization': this.authorization,
             },
             body
         };
