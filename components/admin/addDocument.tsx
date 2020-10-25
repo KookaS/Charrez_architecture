@@ -34,37 +34,6 @@ export class AddDocument extends Component<DocumentProps, DocumentState> {
         }
     }
 
-    /*
-        private newIndicator = (): Indicator => {
-            return {
-                type_: "",
-                arguments: "",
-            };
-        };
-
-        private addIndicator = () => {
-            this.props.ticker.indicators.push(this.newIndicator());
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-        private updateIndicator = (indicator, index) => {
-            this.props.ticker.indicators[index] = indicator;
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-        private removeIndicator = (index) => {
-            this.props.ticker.indicators.splice(index, 1);
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-        private updateName = (e) => {
-            this.props.ticker.name = e.target.value;
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-
-
-     */
     private removeDocument = async (collection: string, docID: string) => {
         const res = await this.api.deleteDocument(this.state.page, collection, docID);
         console.log(res)

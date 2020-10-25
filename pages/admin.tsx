@@ -82,33 +82,8 @@ export default class extends Component<AdminProps, AdminState> {
     private auth = async () => {
         const authorization = await this.api.login(this.state.login);
         this.setState({authorization})
+        console.log("admin authorization: " + this.state.authorization)
     };
-
-    /*
-
-    private addTicker = async () => {
-        const {tickers} = this.state.query;
-        tickers.push(this.newTicker());
-        await this.setState({query: {...this.state.query, tickers}});
-        localStorage.setItem("localState", JSON.stringify(this.state.query));
-    };
-
-    private updateTicker = async (ticker, index) => {
-        const newTicker = this.state.query.tickers;
-        newTicker[index] = ticker;
-        await this.setState({query: {...this.state.query, tickers: newTicker}});
-        localStorage.setItem("localState", JSON.stringify(this.state.query));
-    };
-
-    private removeTicker = async (index) => {
-        let newTicker = this.state.query.tickers;
-        newTicker.splice(index, 1);
-        await this.setState({query: {...this.state.query, tickers: newTicker}});
-        localStorage.setItem("localState", JSON.stringify(this.state.query));
-    };
-
-     */
-
 
     render() {
         return (<>
@@ -121,7 +96,6 @@ export default class extends Component<AdminProps, AdminState> {
                 </PageContainer>
 
                 <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
-
                     <AddProject key={0} index={0} page={"villas"} projects={this.state.projects}
                                 docs={this.state.docs} updateParent={async () => await this.update("villas")}/>)
 

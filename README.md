@@ -13,6 +13,8 @@
     
     npm run start
     
+don't forget to start the DB
+    
 # .env
 
     NEXT_PUBLIC_API_URL = http://localhost:8080
