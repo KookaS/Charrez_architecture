@@ -1,5 +1,11 @@
 import {DocumentContext} from "next/document";
 import {CollectionSchema, DocumentSchema, AllCollectionSchema, AccountSchema, SessionSchema} from "@apiTypes/apiSchema";
+import Cors from 'cors'
+
+// Initializing the cors middleware
+const cors = Cors({
+    methods: ['GET', 'POST', 'DELETE'],
+})
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
@@ -26,6 +32,20 @@ export class Api {
         delete this.context;
     }
 
+    // Helper method to wait for a middleware to execute before continuing
+// And to throw an error when an error happens in a middleware
+    runMiddleware = (req, res, fn) => {
+        return new Promise((resolve, reject) => {
+            fn(req, res, (result) => {
+                if (result instanceof Error) {
+                    return reject(result)
+                }
+
+                return resolve(result)
+            })
+        })
+    }
+
     public login = async (account: AccountSchema) => {
         try {
             const res = await this.post("account/auth", JSON.stringify(account));
@@ -34,11 +54,13 @@ export class Api {
             this.setAuth(key._id);
             return key._id
         } catch (err) {
+            console.log(err)
         }
     };
 
     public setAuth = (value: string) => {
         this.authorization = value;
+        console.log(this.authorization)
     };
 
     private get = async (path: string): Promise<Response> => {
@@ -53,9 +75,8 @@ export class Api {
         const requestOptions = {
             method: 'POST',
             headers: {
-                'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',
-                'Authorization': this.authorization,
+                'Authorization': this.authorization
             },
             body
         };

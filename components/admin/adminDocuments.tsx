@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {CrossButton} from '@components/global/crossButton';
-import {Field, SubContainer, Title} from "@components/admin/adminContainer";
+import {SubContainer, Title} from "@components/admin/adminContainer";
 import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
 import {Api} from "@services/api";
 
@@ -19,7 +19,7 @@ interface DocumentState {
     doc: DocumentSchema,
 }
 
-export class AddDocument extends Component<DocumentProps, DocumentState> {
+export class AdminDocuments extends Component<DocumentProps, DocumentState> {
     props: DocumentProps;
     private api: Api = new Api();
 
@@ -35,40 +35,28 @@ export class AddDocument extends Component<DocumentProps, DocumentState> {
     }
 
     /*
-        private newIndicator = (): Indicator => {
-            return {
-                type_: "",
-                arguments: "",
-            };
-        };
-
-        private addIndicator = () => {
-            this.props.ticker.indicators.push(this.newIndicator());
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-        private updateIndicator = (indicator, index) => {
-            this.props.ticker.indicators[index] = indicator;
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-        private removeIndicator = (index) => {
-            this.props.ticker.indicators.splice(index, 1);
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-        private updateName = (e) => {
-            this.props.ticker.name = e.target.value;
-            this.props.updateParent(this.props.ticker, this.props.index);
-        };
-
-
+    shouldComponentUpdate(nextProps: Readonly<DocumentProps>, nextState: Readonly<DocumentState>, nextContext: any): boolean {
+        const diff = this.state.doc !== nextProps.doc;
+        console.log("rerender documents: " + diff);
+        return diff ;
+    }
 
      */
+    componentDidUpdate(prevProps: Readonly<DocumentProps>, prevState: Readonly<DocumentState>, snapshot?: any) {
+        if (prevProps.doc.documents.length !== this.props.doc.documents.length) {
+            this.setState({
+                page: this.props.page,
+                index: this.props.index,
+                project: this.props.project,
+                doc: this.props.doc,
+            })
+        }
+    }
+
     private removeDocument = async (collection: string, docID: string) => {
         const res = await this.api.deleteDocument(this.state.page, collection, docID);
         console.log(res)
-        //this.props.updateParent();
+        this.props.updateParent();
     };
 
     public render(): React.ReactElement {
