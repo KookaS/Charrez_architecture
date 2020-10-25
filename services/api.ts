@@ -1,11 +1,5 @@
 import {DocumentContext} from "next/document";
 import {CollectionSchema, DocumentSchema, AllCollectionSchema, AccountSchema, SessionSchema} from "@apiTypes/apiSchema";
-import Cors from 'cors'
-
-// Initializing the cors middleware
-const cors = Cors({
-    methods: ['GET', 'POST', 'DELETE'],
-})
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
@@ -136,9 +130,19 @@ export class Api {
         }
     };
 
-    public deleteDocument = async (dbName: string, collection: string, docID: string): Promise<DocumentSchema> => {
+    public deleteDocument = async (dbName: string, collection: string, docID: string): Promise<any> => {
         try {
             const res = await this.delete(dbName + `/deleteDocument?collection=${collection}&id=${docID}`, "");
+            this.checkBadStatus(res);
+            return await res.json();
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    public deleteProject = async (dbName: string, collection: string): Promise<any> => {
+        try {
+            const res = await this.delete(dbName + `/deleteCollection?collection=${collection}`, "");
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {

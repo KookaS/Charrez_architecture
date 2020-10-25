@@ -39,15 +39,6 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
         }
     }
 
-    /*
-    shouldComponentUpdate(nextProps: Readonly<ProjectProps>, nextState: Readonly<ProjectState>, nextContext: any): boolean {
-        const differentProjects = this.state.projects.length !== nextProps.projects.length;
-        const differentDocuments = this.state.docs.map((doc)=>{return doc.documents.length}) !== nextProps.docs.map((doc)=>{return doc.documents.length});
-        return differentProjects || differentDocuments;
-    }
-
-     */
-
     componentDidUpdate(prevProps: Readonly<ProjectProps>, prevState: Readonly<ProjectState>, snapshot?: any) {
         const differentProjects = prevProps.projects.length !== this.props.projects.length;
         const prevLength = prevProps.docs.map((doc) => doc.documents.length).reduce((acc, current) => {
@@ -71,18 +62,21 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
         }
     }
 
-    public
+    private removeProject = async (collection: string) => {
+        await this.api.deleteProject(this.state.page, collection);
+        this.props.updateParent();
+    };
 
-    render()
-        :
-        React.ReactElement {
+
+    public render(): React.ReactElement {
         return (
             <SubContainer className='Ticker'>
                 <Title className='title'>Page: {this.state.page}</Title>
 
                 {this.state.projects.map((project, index) => {
                     return <div key={index}>
-                        <CrossButton className='Project' onClick={null}/>
+                        <CrossButton className='Project'
+                                     onClick={async () => await this.removeProject(project.collection)}/>
                         <AdminDocuments key={index} page={this.state.page} index={index}
                                         project={project}
                                         doc={this.state.docs.find(e => e.collection == project.collection)}
@@ -90,7 +84,7 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
                     </div>
                 })
                 }
-                <Button onClick={null}>ADD DOCUMENT</Button>
+                <Button onClick={null}>ADD PROJECT</Button>
                 <br/>
 
             </SubContainer>

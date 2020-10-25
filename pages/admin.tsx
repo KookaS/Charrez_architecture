@@ -98,8 +98,6 @@ export default class extends Component<AdminProps, AdminState> {
                 <PageContainer style={{display: !this.state.authorization ? "block" : "none"}}>
                     <AdminProjects key={0} index={0} page={"villas"} projects={this.state.projects}
                                    docs={this.state.docs} updateParent={async () => await this.update("villas")}/>)
-
-                    <Button onClick={null}>ADD PROJECT</Button>
                 </PageContainer>
             </AdminContainer>
         </>)

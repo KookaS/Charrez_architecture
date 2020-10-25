@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {CrossButton} from '@components/global/crossButton';
-import {SubContainer, Title} from "@components/admin/adminContainer";
+import {Button, SubContainer, Title} from "@components/admin/adminContainer";
 import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
 import {Api} from "@services/api";
 
@@ -34,14 +34,6 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
         }
     }
 
-    /*
-    shouldComponentUpdate(nextProps: Readonly<DocumentProps>, nextState: Readonly<DocumentState>, nextContext: any): boolean {
-        const diff = this.state.doc !== nextProps.doc;
-        console.log("rerender documents: " + diff);
-        return diff ;
-    }
-
-     */
     componentDidUpdate(prevProps: Readonly<DocumentProps>, prevState: Readonly<DocumentState>, snapshot?: any) {
         if (prevProps.doc.documents.length !== this.props.doc.documents.length) {
             this.setState({
@@ -54,9 +46,9 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
     }
 
     private removeDocument = async (collection: string, docID: string) => {
-        const res = await this.api.deleteDocument(this.state.page, collection, docID);
-        console.log(res)
+        await this.api.deleteDocument(this.state.page, collection, docID);
         this.props.updateParent();
+
     };
 
     public render(): React.ReactElement {
@@ -68,13 +60,16 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
                 Project date: {this.state.project.metadata.date} <br/>
 
                 {this.state.doc.documents.map((doc, index) => {
-                    return <div key={index}>
-                        &emsp;Doc id: {doc._id}<br/>
-                        <CrossButton className='Document'
-                                     onClick={async () => await this.removeDocument(this.state.doc.collection, doc._id)}/>
-                        &emsp;Doc title: {doc.title}<br/>
-                    </div>
+                    if (this.state.doc.collection !== doc._id) {
+                        return <div key={index}>
+                            &emsp;Doc id: {doc._id}<br/>
+                            <CrossButton className='Document'
+                                         onClick={async () => await this.removeDocument(this.state.doc.collection, doc._id)}/>
+                            &emsp;Doc title: {doc.title}<br/>
+                        </div>
+                    }
                 })}
+                <Button onClick={null}>ADD DOCUMENT</Button>
             </SubContainer>
         );
     }
