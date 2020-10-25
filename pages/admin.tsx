@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Api} from "@services/api";
 import {AdminContainer, Button, Field, PageContainer} from "@components/admin/adminContainer";
-import {AddProject} from "@components/admin/addProject";
+import {AdminProjects} from "@components/admin/adminProjects";
 import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
 
 interface AdminProps {
@@ -89,15 +89,15 @@ export default class extends Component<AdminProps, AdminState> {
         return (<>
 
             <AdminContainer>
-                <PageContainer style={{display: this.state.authorization ? "none" : "inline-block"}}>
+                <PageContainer style={{display: !this.state.authorization ? "none" : "inline-block"}}>
                     &emsp;User: <Field onChange={this.updateUser} value={this.state.login.user}/><br/>
                     &emsp;Password: <Field onChange={this.updatePassword} value={this.state.login.password}/><br/>
                     <Button onClick={this.auth}>LOGIN</Button>
                 </PageContainer>
 
-                <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
-                    <AddProject key={0} index={0} page={"villas"} projects={this.state.projects}
-                                docs={this.state.docs} updateParent={async () => await this.update("villas")}/>)
+                <PageContainer style={{display: !this.state.authorization ? "block" : "none"}}>
+                    <AdminProjects key={0} index={0} page={"villas"} projects={this.state.projects}
+                                   docs={this.state.docs} updateParent={async () => await this.update("villas")}/>)
 
                     <Button onClick={null}>ADD PROJECT</Button>
                 </PageContainer>
