@@ -154,7 +154,6 @@ export const Field = Styled.input`
     border-radius: 5px;
     background-color: lightblue;
     opacity: 0.8;
-    display: block;
     
     :focus {
         outline-color: black;

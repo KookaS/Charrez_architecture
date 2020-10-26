@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {CrossButton} from '@components/global/crossButton';
-import {Button, SubContainer, Title} from "@components/admin/adminContainer";
-import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
+import {Button, Field, SubContainer, Title} from "@components/admin/adminContainer";
+import {CollectionSchema, DocumentSchema, NewDocSchema} from "@apiTypes/apiSchema";
 import {Api} from "@services/api";
 
 interface DocumentProps {
@@ -17,6 +17,7 @@ interface DocumentState {
     index: number,
     project: CollectionSchema,
     doc: DocumentSchema,
+    newDoc: NewDocSchema,
 }
 
 export class AdminDocuments extends Component<DocumentProps, DocumentState> {
@@ -31,6 +32,10 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
             index: this.props.index,
             project: this.props.project,
             doc: this.props.doc,
+            newDoc: {
+                file: null,
+                title: ""
+            },
         }
     }
 
@@ -48,7 +53,22 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
     private removeDocument = async (collection: string, docID: string) => {
         await this.api.deleteDocument(this.state.page, collection, docID);
         this.props.updateParent();
+    };
 
+    private updateNewDocTitle = (e) => {
+        this.setState({newDoc: {...this.state.newDoc, title: e.target.value}});
+    };
+
+    private updateNewDocFile = (e) => {
+        this.setState({newDoc: {...this.state.newDoc, file: e.target.files[0]}});
+    };
+
+    private addDoc = async () => {
+        const formData = new FormData();
+        formData.append("title", this.state.newDoc.title);
+        formData.append("file", this.state.newDoc.file);
+        await this.api.addDocument(this.state.page, this.state.project.collection, formData);
+        this.props.updateParent();
     };
 
     public render(): React.ReactElement {
@@ -69,7 +89,10 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
                         </div>
                     }
                 })}
-                <Button onClick={null}>ADD DOCUMENT</Button>
+
+                &emsp;New Doc Title: <Field onChange={this.updateNewDocTitle} value={this.state.newDoc.title}/>
+                &emsp;New Doc File: <Field type="file" onChange={this.updateNewDocFile}/>
+                <Button onClick={this.addDoc}>ADD DOCUMENT</Button>
             </SubContainer>
         );
     }

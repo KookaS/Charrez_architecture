@@ -22,6 +22,12 @@ interface ProjectState {
     page: string,
     projects: CollectionSchema[],
     docs: DocumentSchema[],
+    newProject: {
+        file: File,
+        title: string,
+        description: string,
+        date: string,
+    }
 }
 
 export class AdminProjects extends Component<ProjectProps, ProjectState> {
@@ -36,6 +42,12 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
             page: this.props.page,
             projects: this.props.projects,
             docs: this.props.docs,
+            newProject: {
+                file: null,
+                title: "",
+                description: "",
+                date: "",
+            }
         }
     }
 
@@ -47,10 +59,7 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
         const newLength = this.props.docs.map((doc) => doc.documents.length).reduce((acc, current) => {
             return acc + current;
         }, 0);
-        console.log(prevLength, newLength)
         const differentDocuments = prevLength !== newLength;
-        console.log("differentProjects: " + differentProjects)
-        console.log("differentDocuments: " + differentDocuments)
 
         if (differentProjects || differentDocuments) {
             this.setState({
@@ -64,6 +73,32 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
 
     private removeProject = async (collection: string) => {
         await this.api.deleteProject(this.state.page, collection);
+        this.props.updateParent();
+    };
+
+    private updateNewProjectFile = (e) => {
+        this.setState({newProject: {...this.state.newProject, file: e.target.files[0]}});
+    };
+
+    private updateNewProjectTitle = (e) => {
+        this.setState({newProject: {...this.state.newProject, title: e.target.value}});
+    };
+
+    private updateNewProjectDescription = (e) => {
+        this.setState({newProject: {...this.state.newProject, description: e.target.value}});
+    };
+
+    private updateNewProjectDate = (e) => {
+        this.setState({newProject: {...this.state.newProject, date: e.target.value}});
+    };
+
+    private addProject = async () => {
+        const formData = new FormData();
+        formData.append("title", this.state.newProject.title);
+        formData.append("description", this.state.newProject.description);
+        formData.append("date", this.state.newProject.date);
+        formData.append("file", this.state.newProject.file);
+        await this.api.addProject(this.state.page, formData);
         this.props.updateParent();
     };
 
@@ -82,9 +117,17 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
                                         doc={this.state.docs.find(e => e.collection == project.collection)}
                                         updateParent={() => this.props.updateParent()}/>
                     </div>
-                })
-                }
-                <Button onClick={null}>ADD PROJECT</Button>
+                })}
+
+                <br/><br/>
+
+                &emsp;New Project Title: <Field onChange={this.updateNewProjectTitle}
+                                                value={this.state.newProject.title}/>
+                &emsp;New Project Description: <Field onChange={this.updateNewProjectDescription}
+                                                      value={this.state.newProject.description}/>
+                &emsp;New Project Date: <Field onChange={this.updateNewProjectDate} value={this.state.newProject.date}/>
+                &emsp;New Doc File: <Field type="file" onChange={this.updateNewProjectFile}/>
+                <Button onClick={this.addProject}>ADD PROJECT</Button>
                 <br/>
 
             </SubContainer>
