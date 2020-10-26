@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {CrossButton} from '@components/global/crossButton';
-import {SubContainer, Title} from "@components/admin/adminContainer";
-import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
+import {Button, Field, SubContainer, Title} from "@components/admin/adminContainer";
+import {CollectionSchema, DocumentSchema, NewDocSchema} from "@apiTypes/apiSchema";
 import {Api} from "@services/api";
 
 interface DocumentProps {
@@ -17,6 +17,7 @@ interface DocumentState {
     index: number,
     project: CollectionSchema,
     doc: DocumentSchema,
+    newDoc: NewDocSchema,
 }
 
 export class AdminDocuments extends Component<DocumentProps, DocumentState> {
@@ -31,17 +32,13 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
             index: this.props.index,
             project: this.props.project,
             doc: this.props.doc,
+            newDoc: {
+                file: null,
+                title: ""
+            },
         }
     }
 
-    /*
-    shouldComponentUpdate(nextProps: Readonly<DocumentProps>, nextState: Readonly<DocumentState>, nextContext: any): boolean {
-        const diff = this.state.doc !== nextProps.doc;
-        console.log("rerender documents: " + diff);
-        return diff ;
-    }
-
-     */
     componentDidUpdate(prevProps: Readonly<DocumentProps>, prevState: Readonly<DocumentState>, snapshot?: any) {
         if (prevProps.doc.documents.length !== this.props.doc.documents.length) {
             this.setState({
@@ -54,8 +51,23 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
     }
 
     private removeDocument = async (collection: string, docID: string) => {
-        const res = await this.api.deleteDocument(this.state.page, collection, docID);
-        console.log(res)
+        await this.api.deleteDocument(this.state.page, collection, docID);
+        this.props.updateParent();
+    };
+
+    private updateNewDocTitle = (e) => {
+        this.setState({newDoc: {...this.state.newDoc, title: e.target.value}});
+    };
+
+    private updateNewDocFile = (e) => {
+        this.setState({newDoc: {...this.state.newDoc, file: e.target.files[0]}});
+    };
+
+    private addDoc = async () => {
+        const formData = new FormData();
+        formData.append("title", this.state.newDoc.title);
+        formData.append("file", this.state.newDoc.file);
+        await this.api.addDocument(this.state.page, this.state.project.collection, formData);
         this.props.updateParent();
     };
 
@@ -68,13 +80,19 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
                 Project date: {this.state.project.metadata.date} <br/>
 
                 {this.state.doc.documents.map((doc, index) => {
-                    return <div key={index}>
-                        &emsp;Doc id: {doc._id}<br/>
-                        <CrossButton className='Document'
-                                     onClick={async () => await this.removeDocument(this.state.doc.collection, doc._id)}/>
-                        &emsp;Doc title: {doc.title}<br/>
-                    </div>
+                    if (this.state.doc.collection !== doc._id) {
+                        return <div key={index}>
+                            &emsp;Doc id: {doc._id}<br/>
+                            <CrossButton className='Document'
+                                         onClick={async () => await this.removeDocument(this.state.doc.collection, doc._id)}/>
+                            &emsp;Doc title: {doc.title}<br/>
+                        </div>
+                    }
                 })}
+
+                &emsp;New Doc Title: <Field onChange={this.updateNewDocTitle} value={this.state.newDoc.title}/>
+                &emsp;New Doc File: <Field type="file" onChange={this.updateNewDocFile}/>
+                <Button onClick={this.addDoc}>ADD DOCUMENT</Button>
             </SubContainer>
         );
     }

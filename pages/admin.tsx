@@ -82,25 +82,24 @@ export default class extends Component<AdminProps, AdminState> {
     private auth = async () => {
         const authorization = await this.api.login(this.state.login);
         this.setState({authorization})
-        console.log("admin authorization: " + this.state.authorization)
     };
 
     render() {
         return (<>
 
             <AdminContainer>
-                <PageContainer style={{display: !this.state.authorization ? "none" : "inline-block"}}>
+                <PageContainer style={{display: this.state.authorization ? "none" : "inline-block"}}>
                     &emsp;User: <Field onChange={this.updateUser} value={this.state.login.user}/><br/>
                     &emsp;Password: <Field onChange={this.updatePassword} value={this.state.login.password}/><br/>
                     <Button onClick={this.auth}>LOGIN</Button>
                 </PageContainer>
 
-                <PageContainer style={{display: !this.state.authorization ? "block" : "none"}}>
-                    <AdminProjects key={0} index={0} page={"villas"} projects={this.state.projects}
-                                   docs={this.state.docs} updateParent={async () => await this.update("villas")}/>)
-
-                    <Button onClick={null}>ADD PROJECT</Button>
-                </PageContainer>
+                {this.pages.map((page, index) =>
+                    <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
+                        <AdminProjects key={index} index={index} page={page} projects={this.state.projects}
+                                       docs={this.state.docs} updateParent={async () => await this.update(page)}/>)
+                    </PageContainer>
+                )}
             </AdminContainer>
         </>)
     }

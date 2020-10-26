@@ -37,3 +37,8 @@ export interface SessionSchema {
     _id: string,
     created_at: string
 }
+
+export interface NewDocSchema {
+    file: File,
+    title: string,
+}
