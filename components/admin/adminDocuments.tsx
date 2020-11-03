@@ -79,7 +79,7 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
                 Project description: {this.state.project.metadata.description}<br/>
                 Project date: {this.state.project.metadata.date} <br/>
 
-                {this.state.doc.documents.map((doc, index) => {
+                {this.state.doc.documents ? this.state.doc.documents.map((doc, index) => {
                     if (this.state.doc.collection !== doc._id) {
                         return <div key={index}>
                             &emsp;Doc id: {doc._id}<br/>
@@ -88,7 +88,7 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
                             &emsp;Doc title: {doc.title}<br/>
                         </div>
                     }
-                })}
+                }) : <></>}
 
                 &emsp;New Doc Title: <Field onChange={this.updateNewDocTitle} value={this.state.newDoc.title}/>
                 &emsp;New Doc File: <Field type="file" onChange={this.updateNewDocFile}/>

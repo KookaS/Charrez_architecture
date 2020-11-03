@@ -64,7 +64,7 @@ export default class extends Component<AdminProps, AdminState> {
     private update = async (dbName: string) => {
         const response = await this.api.getAllCollections(dbName)
         const ids = response.collections.map((col) => col.name)
-        const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata("villas", id)))
+        const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata(dbName, id)))
         const docs = await Promise.all(projects.map(async (project) => {
             return await this.api.getAllDocuments("villas", project.collection);
         }));
