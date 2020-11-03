@@ -108,7 +108,7 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
             <SubContainer className='Ticker'>
                 <Title className='title'>Page: {this.state.page}</Title>
 
-                {this.state.projects.map((project, index) => {
+                {this.state.projects ? this.state.projects.map((project, index) => {
                     return <div key={index}>
                         <CrossButton className='Project'
                                      onClick={async () => await this.removeProject(project.collection)}/>
@@ -117,7 +117,7 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
                                         doc={this.state.docs.find(e => e.collection == project.collection)}
                                         updateParent={() => this.props.updateParent()}/>
                     </div>
-                })}
+                }) : <></>}
 
                 <br/><br/>
 

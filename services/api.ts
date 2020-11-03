@@ -4,7 +4,7 @@ import {
     DocumentSchema,
     AllCollectionSchema,
     AccountSchema,
-    SessionSchema,
+    SessionSchema, MetadataSchema,
 } from "@apiTypes/apiSchema";
 
 export class Api {
@@ -56,6 +56,12 @@ export class Api {
             return await res.json();
         } catch (err) {
             console.log(err)
+            return this.emptyPromise(
+                {
+                    message: "no metadata",
+                    collection: "",
+                    metadata: {}
+                });
         }
     };
 
@@ -66,6 +72,11 @@ export class Api {
             return await res.json();
         } catch (err) {
             console.log(err)
+            return this.emptyPromise(
+                {
+                    message: "empty collections",
+                    collections: {}
+                });
         }
     };
 
@@ -76,6 +87,11 @@ export class Api {
             return await res.json();
         } catch (err) {
             console.log(err)
+            return this.emptyPromise({
+                message: "empty documents",
+                collection: "",
+                documents: {}
+            });
         }
     };
 
@@ -117,6 +133,12 @@ export class Api {
         } catch (err) {
             console.log(err)
         }
+    }
+
+    private emptyPromise = (element?: any): Promise<any> => {
+        return new Promise((resolve) => {
+            resolve(element ? element : null);
+        });
     }
 
     private get = async (path: string): Promise<Response> => {
