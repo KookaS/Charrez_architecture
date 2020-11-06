@@ -20,7 +20,7 @@ const StyledNavButton = Styled.span`
     line-height: 20px;
     cursor: pointer;
     background-color: rgb(173,216,230, 0.2);
-    color: grey;
+    color: silver;
     
     @media only screen and (min-width: 300px) {
         /* For Phones: */
@@ -40,11 +40,7 @@ const StyledNavButton = Styled.span`
         background-color: rgb(173,216,230, 0.6);
         color: black;
     }
-    
-    & a {
-        color: inherit;
-        text-decoration: none;
-    }
+   
 `;
 
 export const NavButton = ({children, href, title, currentPage}: NavButtonProps) =>
