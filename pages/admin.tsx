@@ -24,7 +24,7 @@ export default class extends Component<AdminProps, AdminState> {
     public static title: string = "admin";
     props: AdminProps;
     private api: Api;
-    private pages: string[] = ["acceuil", "villas", "immeubles", "urbanisme"];
+    private pages: string[] = ["accueil", "villas", "immeubles", "urbanisme"];
 
     public static getInitialProps = async (context) => {
         try {
