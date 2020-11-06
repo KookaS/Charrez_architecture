@@ -21,14 +21,14 @@ const App = ({Component, pageProps}) => {
                         ${scrollbar}
                         body {
                             margin: 0;
-                            font-family: Roboto;
+                            font-family: Poppins;
                             background: white;
                             color: rgb(20, 20, 20);
                             
                             font-size: 16px; 
                             font-style: normal; 
                             font-variant: normal; 
-                            font-weight: 400; 
+                            font-weight: 800; 
                             line-height: 35px;         
                             overflow-x: hidden;               
                         }

@@ -7,12 +7,9 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link
-                        rel="stylesheet"
-                        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:200,400,500,700&display=swap"
-                        crossOrigin=""
-                    />
-                    <link rel="shortcut icon" href="/static/favicon.jpg"/>
+                    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap" rel="stylesheet"
+                          crossOrigin=""/>
+                    <link rel="favicon" href="/public/favicon.ico"/>
                 </Head>
                 <body>
                 <Main/>
