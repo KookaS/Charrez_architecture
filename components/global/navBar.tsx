@@ -10,7 +10,7 @@ const NavBar = ({currentPage}: NavBarProps) => {
     return (
         <Header>
             <ButtonsWrapper>
-                <NavButton href={"/acceuil"} title="acceuil" currentPage={currentPage}>Acceuil</NavButton>
+                <NavButton href={"/accueil"} title="accueil" currentPage={currentPage}>Accueil</NavButton>
                 <NavButton href={"/villas"} title="villas" currentPage={currentPage}>Villas</NavButton>
                 <NavButton href={"/immeubles"} title="immeubles" currentPage={currentPage}>Immeubles</NavButton>
                 <NavButton href={"/urbanisme"} title="urbanisme" currentPage={currentPage}>Urbanisme</NavButton>
