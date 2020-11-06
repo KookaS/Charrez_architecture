@@ -6,7 +6,7 @@ COPY . .
 
 RUN rm -f .env
 
-RUN echo NEXT_PUBLIC_API_URL=https://architecture.charrez.ch > .env.local
+RUN echo NEXT_PUBLIC_API_URL=https://api.architecture.charrez.ch > .env.local
 
 RUN npm install
 
