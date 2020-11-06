@@ -21,11 +21,11 @@ don't forget to start the DB
     
 ## Docker
 
-    sudo docker build -t next-image/node-web-app .
+    sudo docker build -t next-image .
 
     sudo docker images
     
-    sudo docker run -d --name charrez-gui next-image/node-web-app
+    sudo docker run -d --name charrez-gui next-image
 
     sudo docker ps
     
