@@ -4,7 +4,7 @@ import {
     DocumentSchema,
     AllCollectionSchema,
     AccountSchema,
-    SessionSchema, MetadataSchema,
+    SessionSchema,
 } from "@apiTypes/apiSchema";
 
 export class Api {
@@ -56,12 +56,7 @@ export class Api {
             return await res.json();
         } catch (err) {
             console.log(err)
-            return this.emptyPromise(
-                {
-                    message: "no metadata",
-                    collection: "",
-                    metadata: {}
-                });
+            return null;
         }
     };
 
@@ -69,14 +64,11 @@ export class Api {
         try {
             const res = await this.get(dbName + "/loadAllCollections");
             this.checkBadStatus(res);
+            console.log("loadAllCollections OK!")
             return await res.json();
         } catch (err) {
-            console.log(err)
-            return this.emptyPromise(
-                {
-                    message: "empty collections",
-                    collections: {}
-                });
+            console.log("loadAllCollections KO!", err)
+            return null;
         }
     };
 
@@ -87,11 +79,7 @@ export class Api {
             return await res.json();
         } catch (err) {
             console.log(err)
-            return this.emptyPromise({
-                message: "empty documents",
-                collection: "",
-                documents: {}
-            });
+            return null;
         }
     };
 
