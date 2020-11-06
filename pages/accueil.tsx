@@ -13,7 +13,7 @@ interface IndexState {
 }
 
 export default class extends Component<IndexProps, IndexState> {
-    public static title: string = "acceuil";
+    public static title: string = "accueil";
     props: IndexProps;
 
     public static getInitialProps = async (context) => {
