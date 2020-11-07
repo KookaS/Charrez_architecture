@@ -50,7 +50,6 @@ export default class extends Component<AdminProps, AdminState> {
                     docs
                 }
             }))
-            console.log(all)
             api.removeCtx();
             return {api, all};
         } catch (err) {
