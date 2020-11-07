@@ -40,7 +40,6 @@ export class Api {
             this.setAuth(key._id);
             return key._id
         } catch (err) {
-            console.log(err)
         }
     };
 
@@ -55,7 +54,6 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            console.log(err)
             return null;
         }
     };
@@ -64,10 +62,8 @@ export class Api {
         try {
             const res = await this.get(dbName + "/loadAllCollections");
             this.checkBadStatus(res);
-            console.log("loadAllCollections OK!")
             return await res.json();
         } catch (err) {
-            console.log("loadAllCollections KO!", err)
             return null;
         }
     };
@@ -78,7 +74,6 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            console.log(err)
             return null;
         }
     };
@@ -89,7 +84,6 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            console.log(err)
         }
     };
 
@@ -99,7 +93,6 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            console.log(err)
         }
     };
 
@@ -109,7 +102,6 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            console.log(err)
         }
     }
 
@@ -119,7 +111,6 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            console.log(err)
         }
     }
 
