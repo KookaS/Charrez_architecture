@@ -6,13 +6,19 @@ import {CollectionSchema, DocumentSchema} from "@apiTypes/apiSchema";
 
 interface AdminProps {
     api: Api,
-    projects: CollectionSchema[],
-    docs: DocumentSchema[],
+    all: {
+        page: string,
+        projects: CollectionSchema[],
+        docs: DocumentSchema[]
+    }[]
 }
 
 interface AdminState {
-    projects: CollectionSchema[],
-    docs: DocumentSchema[],
+    all: {
+        page: string,
+        projects: CollectionSchema[],
+        docs: DocumentSchema[]
+    }[]
     login: {
         user: string,
         password: string
@@ -30,14 +36,23 @@ export default class extends Component<AdminProps, AdminState> {
         try {
             const api = new Api();
             await api.getInitialToken(context);
-            const response = await api.getAllCollections("villas")
-            const ids = response.collections.map((col) => col.name)
-            const projects = await Promise.all(ids.map(async (id) => await api.getMetadata("villas", id)))
-            const docs = await Promise.all(projects.map(async (project) => {
-                return await api.getAllDocuments("villas", project.collection);
-            }));
+            const pages = ["accueil", "villas", "immeubles", "urbanisme"];
+            const all: any[] = await Promise.all(pages.map(async (dbName) => {
+                const response = await api.getAllCollections(dbName)
+                const ids = response.collections.map((col) => col.name)
+                const projects = await Promise.all(ids.map(async (id) => await api.getMetadata(dbName, id)))
+                const docs = await Promise.all(projects.map(async (project) => {
+                    return await api.getAllDocuments(dbName, project.collection);
+                }));
+                return {
+                    page: dbName,
+                    projects,
+                    docs
+                }
+            }))
+            console.log(all)
             api.removeCtx();
-            return {api, projects, docs};
+            return {api, all};
         } catch (err) {
             return {};
         }
@@ -47,8 +62,7 @@ export default class extends Component<AdminProps, AdminState> {
         super(props);
         this.props = props;
         this.state = {
-            projects: this.props.projects,
-            docs: this.props.docs,
+            all: this.props.all,
             login: {
                 user: "",
                 password: ""
@@ -62,13 +76,20 @@ export default class extends Component<AdminProps, AdminState> {
     }
 
     private update = async (dbName: string) => {
-        const response = await this.api.getAllCollections(dbName)
-        const ids = response.collections.map((col) => col.name)
-        const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata(dbName, id)))
-        const docs = await Promise.all(projects.map(async (project) => {
-            return await this.api.getAllDocuments("villas", project.collection);
-        }));
-        this.setState({projects, docs})
+        const all: any[] = await Promise.all(this.pages.map(async (page) => {
+            const response = await this.api.getAllCollections(dbName)
+            const ids = response.collections.map((col) => col.name)
+            const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata(dbName, id)))
+            const docs = await Promise.all(projects.map(async (project) => {
+                return await this.api.getAllDocuments(dbName, project.collection);
+            }));
+            return {
+                page,
+                projects,
+                docs
+            }
+        }))
+        this.setState({all})
     };
 
     private updateUser = async (e) => {
@@ -96,8 +117,10 @@ export default class extends Component<AdminProps, AdminState> {
 
                 {this.pages.map((page, index) =>
                     <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
-                        <AdminProjects key={index} index={index} page={page} projects={this.state.projects}
-                                       docs={this.state.docs} updateParent={async () => await this.update(page)}/>)
+                        <AdminProjects key={index} index={index} page={page}
+                                       projects={this.state.all.find(e => e.page == page).projects}
+                                       docs={this.state.all.find(e => e.page == page).docs}
+                                       updateParent={async () => await this.update(page)}/>)
                     </PageContainer>
                 )}
             </AdminContainer>

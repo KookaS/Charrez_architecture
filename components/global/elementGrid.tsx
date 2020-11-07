@@ -11,7 +11,6 @@ interface ProjectProps {
 export const ElementGrid = (props: ProjectProps) => {
 
     const elements = props.elements.map((metadata, index) => {
-        console.log(metadata)
         return (
             <ImageProjectGridElement
                 key={index}
