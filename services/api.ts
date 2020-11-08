@@ -9,15 +9,10 @@ import {
 
 export class Api {
     public static host = process.env.NEXT_PUBLIC_API_URL;
-    public authorization: string;
+    public authorization: string = null;
     private context: DocumentContext;
 
-    constructor(auth?: string) {
-        if (auth) {
-            this.authorization = auth;
-        } else {
-            this.authorization = null;
-        }
+    constructor() {
     }
 
     public hostName = (): string => {
