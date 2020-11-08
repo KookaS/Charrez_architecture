@@ -16,7 +16,7 @@ export class Api {
         if (auth) {
             this.authorization = auth;
         } else {
-            this.authorization = undefined;
+            this.authorization = null;
         }
     }
 

@@ -66,7 +66,7 @@ export default class extends Component<AdminProps, AdminState> {
                 user: "",
                 password: ""
             },
-            authorization: undefined
+            authorization: null
         }
     };
 
