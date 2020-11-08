@@ -114,14 +114,14 @@ export default class extends Component<AdminProps, AdminState> {
                     <Button onClick={this.auth}>LOGIN</Button>
                 </PageContainer>
 
-                {this.pages.map((page, index) =>
+                {this.state.all ? this.pages.map((page, index) =>
                     <PageContainer style={{display: this.state.authorization ? "block" : "none"}}>
                         <AdminProjects key={index} index={index} page={page}
                                        projects={this.state.all.find(e => e.page == page).projects}
                                        docs={this.state.all.find(e => e.page == page).docs}
                                        updateParent={async () => await this.update(page)}/>)
                     </PageContainer>
-                )}
+                ) : <></>}
             </AdminContainer>
         </>)
     }
