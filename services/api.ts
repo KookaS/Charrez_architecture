@@ -109,6 +109,7 @@ export class Api {
         }
     }
 
+
     private emptyPromise = (element?: any): Promise<any> => {
         return new Promise((resolve) => {
             resolve(element ? element : null);

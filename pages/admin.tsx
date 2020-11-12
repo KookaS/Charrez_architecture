@@ -70,6 +70,10 @@ export default class extends Component<AdminProps, AdminState> {
         }
     };
 
+    componentDidMount() {
+        this.api = new Api();
+    }
+
     private update = async (dbName: string) => {
         const all: any[] = await Promise.all(this.pages.map(async (page) => {
             const response = await this.api.getAllCollections(dbName)
