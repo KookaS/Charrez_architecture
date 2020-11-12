@@ -75,19 +75,14 @@ export default class extends Component<AdminProps, AdminState> {
     }
 
     private update = async (dbName: string) => {
-        const all: any[] = await Promise.all(this.pages.map(async (page) => {
-            const response = await this.api.getAllCollections(dbName)
+        const all = this.state.all
+        const response = await this.api.getAllCollections(dbName)
             const ids = response.collections.map((col) => col.name)
             const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata(dbName, id)))
             const docs = await Promise.all(projects.map(async (project) => {
                 return await this.api.getAllDocuments(dbName, project.collection);
             }));
-            return {
-                page,
-                projects,
-                docs
-            }
-        }))
+        all.splice(all.findIndex(e => e.page == dbName), 1, {page: dbName, projects, docs})
         this.setState({all})
     };
 
