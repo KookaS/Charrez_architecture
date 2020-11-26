@@ -119,9 +119,6 @@ export class Api {
     private get = async (path: string): Promise<Response> => {
         const requestOptions = {
             method: 'GET',
-            headers: {
-                'Access-Control-Allow-Origin': '*'
-            },
         }
 
 
