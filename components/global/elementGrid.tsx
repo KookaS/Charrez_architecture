@@ -4,7 +4,6 @@ import {MetadataSchema} from "@apiTypes/apiSchema";
 import {SubText} from "@components/global/text";
 
 interface ProjectProps {
-    dbName: string,
     elements: MetadataSchema[],
 }
 

@@ -6,6 +6,7 @@ import {ProjectGrid} from "@components/global/projectGrid";
 interface VillasProps {
     api: Api,
     projects: CollectionSchema[],
+    dbName: string,
 }
 
 export default class extends Component<VillasProps, {}> {
@@ -21,7 +22,7 @@ export default class extends Component<VillasProps, {}> {
             const ids = response.collections.map((col) => col.name)
             const projects = await Promise.all(ids.map(async (id) => await api.getMetadata(dbName, id)))
             api.removeCtx();
-            return {api, projects};
+            return {api, projects, dbName};
         } catch (err) {
             return {};
         }
@@ -33,6 +34,6 @@ export default class extends Component<VillasProps, {}> {
     };
 
     render() {
-        return ProjectGrid({elements: this.props.projects});
+        return ProjectGrid({dbName: this.props.dbName, elements: this.props.projects});
     }
 }

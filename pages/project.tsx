@@ -10,9 +10,6 @@ interface IndexProps {
 }
 
 interface IndexState {
-    dbName: string,
-    api: Api,
-    documents: MetadataSchema[],
 }
 
 export default class extends Component<IndexProps, IndexState> {
@@ -23,11 +20,11 @@ export default class extends Component<IndexProps, IndexState> {
         try {
             const api = new Api();  //NextJS api
             await api.getInitialToken(context);
-            const {id} = context.query;
-            const response = await api.getAllDocuments("villas", id);
+            const {dbName, collection} = context.query;
+            const response = await api.getAllDocuments(dbName, collection);
             const documents = response.documents;
             api.removeCtx();
-            return {id, api, documents};
+            return {collection, api, documents};
         } catch (err) {
             return {};
         }
@@ -35,17 +32,11 @@ export default class extends Component<IndexProps, IndexState> {
 
     constructor(props) {
         super(props);
-        this.props = props;
-        this.state = {
-            dbName: this.props.id,
-            documents: this.props.documents,
-            api: this.props.api,
-        }
     };
 
 
     render() {
-        return ElementGrid({dbName: this.state.dbName, elements: this.state.documents});
+        return ElementGrid({elements: this.props.documents});
     }
 
 }
