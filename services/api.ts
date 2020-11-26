@@ -65,7 +65,7 @@ export class Api {
 
     public getAllDocuments = async (dbName: string, collection: string): Promise<DocumentSchema> => {
         try {
-            const res = await this.get(dbName + `/loadDocuments?id=${collection}`);
+            const res = await this.get(dbName + `/loadDocuments?collection=${collection}`);
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
@@ -119,6 +119,9 @@ export class Api {
     private get = async (path: string): Promise<Response> => {
         const requestOptions = {
             method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         }
 
 
