@@ -120,10 +120,8 @@ export class Api {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': this.authorization,
                 'Access-Control-Allow-Origin': '*'
-            }
+            },
         }
 
 
