@@ -118,8 +118,12 @@ export class Api {
 
     private get = async (path: string): Promise<Response> => {
         const requestOptions = {
-            method: 'GET'
-        };
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+        }
+
 
         return await fetch(`${Api.host}/${path}`, requestOptions);
     };
@@ -129,10 +133,12 @@ export class Api {
             method: 'POST',
             headers: typeof body == "string" ? {
                     'Content-Type': 'application/json',
-                    'Authorization': this.authorization
+                    'Authorization': this.authorization,
+                    'Access-Control-Allow-Origin': '*'
                 } :
                 {
-                    'Authorization': this.authorization
+                    'Authorization': this.authorization,
+                    'Access-Control-Allow-Origin': '*'
                 },
             body
         };
@@ -145,7 +151,8 @@ export class Api {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': this.authorization
+                'Authorization': this.authorization,
+                'Access-Control-Allow-Origin': '*'
             },
             body
         };
