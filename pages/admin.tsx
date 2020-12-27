@@ -30,32 +30,33 @@ export default class extends Component<AdminProps, AdminState> {
     public static title: string = "admin";
     props: AdminProps;
     private api: Api;
-    private pages: string[] = ["accueil", "villas", "immeubles", "urbanisme"];
+    private pages: string[] = ["villas", "immeubles", "urbanisme"];
 
     public static getInitialProps = async (context) => {
-        try {
-            const api = new Api();
-            await api.getInitialToken(context);
-            const pages = ["accueil", "villas", "immeubles", "urbanisme"];
-            const all: any[] = await Promise.all(pages.map(async (dbName) => {
+
+        const api = new Api();
+        await api.getInitialToken(context);
+        const pages = ["villas", "immeubles", "urbanisme"];
+        const all: any[] = [];
+        for (const dbName of pages) {
+            try {
                 const response = await api.getAllCollections(dbName)
                 const ids = response.collections.map((col) => col.name)
                 const projects = await Promise.all(ids.map(async (id) => await api.getMetadata(dbName, id)))
                 const docs = await Promise.all(projects.map(async (project) => {
                     return await api.getAllDocuments(dbName, project.collection);
                 }));
-                return {
+                all.push({
                     page: dbName,
                     projects,
                     docs
-                }
-            }))
-            console.log(all)
-            api.removeCtx();
-            return {api, all};
-        } catch (err) {
-            return {};
+                })
+            } catch (err) {
+            }
         }
+        console.log(all)
+        api.removeCtx();
+        return {api, all};
     };
 
     constructor(props) {
@@ -78,11 +79,11 @@ export default class extends Component<AdminProps, AdminState> {
     private update = async (dbName: string) => {
         const all = this.state.all
         const response = await this.api.getAllCollections(dbName)
-            const ids = response.collections.map((col) => col.name)
-            const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata(dbName, id)))
-            const docs = await Promise.all(projects.map(async (project) => {
-                return await this.api.getAllDocuments(dbName, project.collection);
-            }));
+        const ids = response.collections.map((col) => col.name)
+        const projects = await Promise.all(ids.map(async (id) => await this.api.getMetadata(dbName, id)))
+        const docs = await Promise.all(projects.map(async (project) => {
+            return await this.api.getAllDocuments(dbName, project.collection);
+        }));
         all.splice(all.findIndex(e => e.page == dbName), 1, {page: dbName, projects, docs})
         this.setState({all})
     };
@@ -102,7 +103,6 @@ export default class extends Component<AdminProps, AdminState> {
 
     render() {
         return (<>
-
             <AdminContainer>
                 <PageContainer style={{display: this.state.authorization ? "none" : "inline-block"}}>
                     &emsp;User: <Field onChange={this.updateUser} value={this.state.login.user}/><br/>

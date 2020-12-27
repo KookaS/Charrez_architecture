@@ -40,7 +40,6 @@ export class Api {
 
     public setAuth = (value: string) => {
         this.authorization = value;
-        console.log(this.authorization)
     };
 
     public getMetadata = async (dbName: string, id: string): Promise<CollectionSchema> => {
@@ -49,7 +48,7 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            return null;
+            return err;
         }
     };
 
@@ -59,7 +58,7 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            return null;
+            return err;
         }
     };
 
@@ -69,7 +68,7 @@ export class Api {
             this.checkBadStatus(res);
             return await res.json();
         } catch (err) {
-            return null;
+            return err;
         }
     };
 
