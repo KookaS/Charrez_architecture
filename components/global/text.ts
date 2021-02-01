@@ -48,5 +48,6 @@ export const SubText = Styled.div`
     
     &.Project{
         top: 600px;
+        font-size: 30px; 
     }
 `;
