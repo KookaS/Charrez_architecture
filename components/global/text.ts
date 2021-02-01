@@ -23,6 +23,7 @@ export const Title = Styled.div`
     }
     
     &.Project{
+        font-size: 40px; 
         top: 200px;
     }
 `;
