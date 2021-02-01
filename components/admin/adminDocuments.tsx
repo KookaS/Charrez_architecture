@@ -82,16 +82,17 @@ export class AdminDocuments extends Component<DocumentProps, DocumentState> {
                 {this.state.doc.documents ? this.state.doc.documents.map((doc, index) => {
                     if (this.state.doc.collection !== doc._id) {
                         return <div key={index}>
-                            &emsp;Doc id: {doc._id}<br/>
+                            &emsp;&emsp;&emsp;&emsp;Doc id: {doc._id}<br/>
                             <CrossButton className='Document'
                                          onClick={async () => await this.removeDocument(this.state.doc.collection, doc._id)}/>
-                            &emsp;Doc title: {doc.title}<br/>
+                            &emsp;&emsp;&emsp;&emsp;Doc title: {doc.title}<br/>
                         </div>
                     }
                 }) : <></>}
 
-                &emsp;New Doc Title: <Field onChange={this.updateNewDocTitle} value={this.state.newDoc.title}/>
-                &emsp;New Doc File: <Field type="file" onChange={this.updateNewDocFile}/>
+                &emsp;&emsp;&emsp;&emsp;New Doc Title: <Field onChange={this.updateNewDocTitle}
+                                                              value={this.state.newDoc.title}/>
+                New Doc File: <Field type="file" onChange={this.updateNewDocFile}/>
                 <Button onClick={this.addDoc}>ADD DOCUMENT</Button>
             </SubContainer>
         );

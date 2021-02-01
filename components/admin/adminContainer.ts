@@ -18,19 +18,17 @@ export const Title = Styled.span`
 `;
 
 export const Button = Styled.div`
-    height: 30px;
+    height: 35px;
     width: 150px;
     background-color: lightblue;
     color: black;
-    margin: 5px 20px;  
-    padding: 10px;
+    margin: 0px 15px;  
     text-align: center;
     transition: 0.5s;
     border 2px solid grey;
     border-radius: 5px;
     cursor: pointer;
     display: inline-block;
-    padding: 3px;
    
     font-size: 15px; 
    

@@ -84,10 +84,6 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
         this.setState({newProject: {...this.state.newProject, title: e.target.value}});
     };
 
-    private updateNewProjectDescription = (e) => {
-        this.setState({newProject: {...this.state.newProject, description: e.target.value}});
-    };
-
     private updateNewProjectDate = (e) => {
         this.setState({newProject: {...this.state.newProject, date: e.target.value}});
     };
@@ -121,12 +117,10 @@ export class AdminProjects extends Component<ProjectProps, ProjectState> {
 
                 <br/><br/>
 
-                &emsp;New Project Title: <Field onChange={this.updateNewProjectTitle}
-                                                value={this.state.newProject.title}/>
-                &emsp;New Project Description: <Field onChange={this.updateNewProjectDescription}
-                                                      value={this.state.newProject.description}/>
-                &emsp;New Project Date: <Field onChange={this.updateNewProjectDate} value={this.state.newProject.date}/>
-                &emsp;New Doc File: <Field type="file" onChange={this.updateNewProjectFile}/>
+                &emsp;&emsp;&emsp;New Project Title: <Field onChange={this.updateNewProjectTitle}
+                                                            value={this.state.newProject.title}/>
+                New Project Date: <Field onChange={this.updateNewProjectDate} value={this.state.newProject.date}/>
+                New Doc File: <Field type="file" onChange={this.updateNewProjectFile}/>
                 <Button onClick={this.addProject}>ADD PROJECT</Button>
                 <br/>
 

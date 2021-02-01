@@ -17,7 +17,7 @@ export const Title = Styled.div`
         
         @media only screen and (min-width: 600px) {
             /* For Desktop: */
-            top: 250px;
+            top: 150px;
             font-size: 60px; 
         }
     }
@@ -42,7 +42,7 @@ export const SubText = Styled.div`
         
         @media only screen and (min-width: 600px) {
             /* For Desktop: */
-            top: 500px;
+            top: 300px;
             font-size: 30px; 
         }
     }
