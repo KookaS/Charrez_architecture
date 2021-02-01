@@ -106,7 +106,8 @@ export default class extends Component<AdminProps, AdminState> {
             <AdminContainer>
                 <PageContainer style={{display: this.state.authorization ? "none" : "inline-block"}}>
                     &emsp;User: <Field onChange={this.updateUser} value={this.state.login.user}/><br/>
-                    &emsp;Password: <Field onChange={this.updatePassword} value={this.state.login.password}/><br/>
+                    &emsp;Password: <Field onChange={this.updatePassword} value={this.state.login.password}
+                                           type="password"/><br/>
                     <Button onClick={this.auth}>LOGIN</Button>
                 </PageContainer>
 

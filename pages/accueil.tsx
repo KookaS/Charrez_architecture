@@ -42,8 +42,10 @@ export default class extends Component<IndexProps, IndexState> {
                 style={{backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/loadImage?id=${this.props.id})`}}>
                 <Title className='Acceuil'>CHARREZ ARCHITECTURE</Title>
                 <SubText className='Acceuil'>J. CHARREZ SIA - EAUG - ETS</SubText>
-                <SubText className='Acceuil'>CHEMIN TATTES-FONTAINE 43 - 1253 VANDOEUVRES</SubText>
-                <SubText className='Acceuil'>TEL/FAX +41 22 348 78 00 - MOBILE +41 79 469 78 88</SubText>
+                <SubText className='Acceuil'>CHEMIN TATTES-FONTAINE 43</SubText>
+                <SubText className='Acceuil'>1253 VANDOEUVRES</SubText>
+                <SubText className='Acceuil'>TEL/FAX +41 22 348 78 00</SubText>
+                <SubText className='Acceuil'>MOBILE +41 79 469 78 88</SubText>
                 <SubText className='Acceuil'>charrez.architecture@bluewin.ch</SubText>
             </ImageBackground>
 
